@@ -8,13 +8,13 @@ fine-tuning), dilengkapi visualisasi Grad-CAM untuk interpretability model.
 
 ```
 .
-├── 01_preprocessing_split.py    # Analisis dataset & stratified split (80:10:10)
-├── train_efficientnetv2_expA.py # Training 2-stage (transfer learning + fine-tuning) & evaluasi
-├── 02_gradcam_xai.py            # Visualisasi Grad-CAM untuk interpretability
+├── split_data.py       # Analisis dataset & stratified split (80:10:10)
+├── efficientnetv2.py   # Training 2-stage (transfer learning + fine-tuning) & evaluasi
+├── xai_gradcam.py       # Visualisasi Grad-CAM untuk interpretability
 ├── requirements.txt
 ├── .gitignore
 └── docs/
-    └── figures/                 # Beberapa contoh hasil (opsional, untuk ilustrasi di laporan)
+    └── figures/         # Beberapa contoh hasil (opsional, untuk ilustrasi di laporan)
 ```
 
 ## Yang TIDAK ada di repo ini (dan alasannya)
@@ -22,9 +22,9 @@ fine-tuning), dilengkapi visualisasi Grad-CAM untuk interpretability model.
 | Item | Alasan |
 |---|---|
 | Dataset mentah citra | Ukuran besar, bukan tempatnya di repo kode |
-| Folder `data_split/` | Hasil generate otomatis dari `01_preprocessing_split.py`, tidak perlu di-commit |
+| Folder `data_split/` | Hasil generate otomatis dari `split_data.py`, tidak perlu di-commit |
 | File model `.keras` | Kemungkinan >50-100MB, melebihi batas nyaman GitHub tanpa Git LFS |
-| Seluruh output Grad-CAM (PNG/ZIP per kelas) | Ribuan file, hasil generate dari `02_gradcam_xai.py` |
+| Seluruh output Grad-CAM (PNG/ZIP per kelas) | Ribuan file, hasil generate dari `xai_gradcam.py` |
 
 Kalau perlu membagikan dataset atau model terlatih, upload ke Kaggle Datasets /
 Google Drive / Hugging Face, lalu cantumkan link-nya di bagian "Dataset & Model"
@@ -57,7 +57,7 @@ di bawah.
    ```bash
    export DATASET_DIR=./dataset
    export SPLIT_DIR=./data_split
-   python 01_preprocessing_split.py
+   python split_data.py
    ```
    Menghasilkan `data_split/{train,val,test}/<kelas>/` dan grafik distribusi di `figures/`.
 
@@ -67,7 +67,7 @@ di bawah.
    export VAL_DIR=./data_split/val
    export TEST_DIR=./data_split/test
    export OUTPUT_ROOT=./outputs
-   python train_efficientnetv2_expA.py
+   python efficientnetv2.py
    ```
    Menghasilkan model terlatih (`best_model_finetuned.keras`), metrik evaluasi,
    dan confusion matrix di `outputs/<nama_eksperimen>_<timestamp>/`.
@@ -77,7 +77,7 @@ di bawah.
    export MODEL_PATH=./outputs/<nama_eksperimen>_<timestamp>/best_model_finetuned.keras
    export TEST_DIR=./data_split/test
    export GRADCAM_OUTPUT_DIR=./gradcam_output
-   python 02_gradcam_xai.py
+   python xai_gradcam.py
    ```
    Menghasilkan heatmap Grad-CAM per kelas (dipisah benar/salah prediksi),
    dikemas sebagai ZIP per kelas.
@@ -107,4 +107,4 @@ di bawah.
 - Grad-CAM mengasumsikan layer konvolusi terakhir dalam urutan `backbone.layers`
   sama dengan layer yang secara aktual dieksekusi terakhir pada forward pass.
   Untuk arsitektur dengan skip connection (EfficientNetV2S), ini asumsi yang
-  wajar tapi bukan jaminan mutlak -- lihat komentar di `02_gradcam_xai.py`.
+  wajar tapi bukan jaminan mutlak -- lihat komentar di `xai_gradcam.py`.
