@@ -1,0 +1,26 @@
+# Dataset mentah -- jangan commit gambar
+dataset/
+data_split/
+
+# Model terlatih -- ukurannya besar, simpan di luar repo (Drive/Kaggle Datasets/HF)
+*.keras
+*.h5
+model/
+
+# Output hasil generate (regenerable dengan menjalankan script)
+gradcam_output/
+figures/
+outputs/
+*.png
+*.zip
+!docs/figures/*.png
+
+# Cache Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Environment
+.env
+venv/
+.venv/

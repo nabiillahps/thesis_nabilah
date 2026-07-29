@@ -1,0 +1,110 @@
+# Identifikasi Pemalsuan Bubuk Cabai Merah Menggunakan Citra Digital Berbasis EfficientNetV2 dengan Visualisasi Explainable AI
+
+Repository ini berisi kode untuk skripsi di atas: klasifikasi citra bubuk cabai
+merah murni vs campuran menggunakan EfficientNetV2S (transfer learning +
+fine-tuning), dilengkapi visualisasi Grad-CAM untuk interpretability model.
+
+## Struktur Repo
+
+```
+.
+├── 01_preprocessing_split.py    # Analisis dataset & stratified split (80:10:10)
+├── train_efficientnetv2_expA.py # Training 2-stage (transfer learning + fine-tuning) & evaluasi
+├── 02_gradcam_xai.py            # Visualisasi Grad-CAM untuk interpretability
+├── requirements.txt
+├── .gitignore
+└── docs/
+    └── figures/                 # Beberapa contoh hasil (opsional, untuk ilustrasi di laporan)
+```
+
+## Yang TIDAK ada di repo ini (dan alasannya)
+
+| Item | Alasan |
+|---|---|
+| Dataset mentah citra | Ukuran besar, bukan tempatnya di repo kode |
+| Folder `data_split/` | Hasil generate otomatis dari `01_preprocessing_split.py`, tidak perlu di-commit |
+| File model `.keras` | Kemungkinan >50-100MB, melebihi batas nyaman GitHub tanpa Git LFS |
+| Seluruh output Grad-CAM (PNG/ZIP per kelas) | Ribuan file, hasil generate dari `02_gradcam_xai.py` |
+
+Kalau perlu membagikan dataset atau model terlatih, upload ke Kaggle Datasets /
+Google Drive / Hugging Face, lalu cantumkan link-nya di bagian "Dataset & Model"
+di bawah.
+
+## Cara Menjalankan (Reproduksi Penuh)
+
+1. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+   > Catatan: versi di `requirements.txt` ini perkiraan umum, bukan hasil `pip freeze`
+   > dari environment Kaggle-mu yang sebenarnya. [Low confidence soal versi persis]
+   > Sebaiknya jalankan `pip freeze > requirements.txt` di environment Kaggle-mu
+   > yang sudah terbukti jalan, lalu timpa file ini, supaya orang lain dapat versi
+   > yang benar-benar kamu pakai.
+
+2. **Siapkan dataset**
+   Taruh dataset di folder `dataset/` dengan struktur:
+   ```
+   dataset/
+   ├── KT00/
+   ├── KTGM_5/
+   ├── KTGM_10/
+   ...
+   ```
+   (isi tabel penjelasan kode kelas di bawah)
+
+3. **Preprocessing & split data**
+   ```bash
+   export DATASET_DIR=./dataset
+   export SPLIT_DIR=./data_split
+   python 01_preprocessing_split.py
+   ```
+   Menghasilkan `data_split/{train,val,test}/<kelas>/` dan grafik distribusi di `figures/`.
+
+4. **Training model**
+   ```bash
+   export TRAIN_DIR=./data_split/train
+   export VAL_DIR=./data_split/val
+   export TEST_DIR=./data_split/test
+   export OUTPUT_ROOT=./outputs
+   python train_efficientnetv2_expA.py
+   ```
+   Menghasilkan model terlatih (`best_model_finetuned.keras`), metrik evaluasi,
+   dan confusion matrix di `outputs/<nama_eksperimen>_<timestamp>/`.
+
+5. **Visualisasi Grad-CAM (XAI)**
+   ```bash
+   export MODEL_PATH=./outputs/<nama_eksperimen>_<timestamp>/best_model_finetuned.keras
+   export TEST_DIR=./data_split/test
+   export GRADCAM_OUTPUT_DIR=./gradcam_output
+   python 02_gradcam_xai.py
+   ```
+   Menghasilkan heatmap Grad-CAM per kelas (dipisah benar/salah prediksi),
+   dikemas sebagai ZIP per kelas.
+
+## Penjelasan Kode Kelas
+
+<!-- TODO: isi tabel ini -- aku tidak tahu arti tiap kode, isi sendiri -->
+| Kode | Arti |
+|---|---|
+| KT00 | ... |
+| KTGM_5/10/15 | ... |
+| KTRB_5/10/15 | ... |
+| KTUT_5/10/15 | ... |
+| KTWB_5/10/15 | ... |
+| KTWS_5/10/15 | ... |
+
+## Dataset & Model
+
+<!-- TODO: isi link ke dataset (Kaggle Datasets) dan model terlatih (Drive/HF) -->
+- Dataset: `<link>`
+- Model terlatih: `<link>`
+
+## Catatan Metodologis
+
+- Eksperimen training ini (`expA`) sengaja tanpa Dropout, tanpa augmentasi data,
+  dan tanpa label smoothing -- bagian dari perbandingan eksperimen di skripsi.
+- Grad-CAM mengasumsikan layer konvolusi terakhir dalam urutan `backbone.layers`
+  sama dengan layer yang secara aktual dieksekusi terakhir pada forward pass.
+  Untuk arsitektur dengan skip connection (EfficientNetV2S), ini asumsi yang
+  wajar tapi bukan jaminan mutlak -- lihat komentar di `02_gradcam_xai.py`.
