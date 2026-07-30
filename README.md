@@ -36,11 +36,12 @@ di bawah.
    ```bash
    pip install -r requirements.txt
    ```
-   > Catatan: versi di `requirements.txt` ini perkiraan umum, bukan hasil `pip freeze`
-   > dari environment Kaggle-mu yang sebenarnya. [Low confidence soal versi persis]
-   > Sebaiknya jalankan `pip freeze > requirements.txt` di environment Kaggle-mu
-   > yang sudah terbukti jalan, lalu timpa file ini, supaya orang lain dapat versi
-   > yang benar-benar kamu pakai.
+   > **Catatan:** Versi pustaka pada `requirements.txt` merupakan estimasi umum,
+   > bukan hasil `pip freeze` dari environment Kaggle yang sesungguhnya digunakan
+   > selama penelitian. Untuk menjamin reproduksibilitas penuh, disarankan
+   > menjalankan `pip freeze > requirements.txt` pada environment Kaggle yang
+   > telah terverifikasi berjalan dengan baik, kemudian menggantikan berkas ini
+   > dengan hasil tersebut.
 
 2. **Siapkan dataset**
    Taruh dataset di folder `dataset/` dengan struktur:
@@ -84,15 +85,18 @@ di bawah.
 
 ## Penjelasan Kode Kelas
 
-<!-- TODO: isi tabel ini -- aku tidak tahu arti tiap kode, isi sendiri -->
+Dataset terdiri dari 16 kelas: 1 kelas murni dan 15 kelas hasil pemalsuan
+menggunakan 5 jenis bahan pemalsu, masing-masing pada 3 tingkat konsentrasi
+(5%, 10%, 15%).
+
 | Kode | Arti |
 |---|---|
-| KT00 | ... |
-| KTGM_5/10/15 | ... |
-| KTRB_5/10/15 | ... |
-| KTUT_5/10/15 | ... |
-| KTWB_5/10/15 | ... |
-| KTWS_5/10/15 | ... |
+| `KT00` | Bubuk Khammam Teja murni (tanpa pemalsuan) |
+| `KTUT_5` / `KTUT_10` / `KTUT_15` | Bubuk Khammam Teja dengan pemalsu United sebesar 5% / 10% / 15% |
+| `KTGM_5` / `KTGM_10` / `KTGM_15` | Bubuk Khammam Teja dengan pemalsu Guntur Mix sebesar 5% / 10% / 15% |
+| `KTWB_5` / `KTWB_10` / `KTWB_15` | Bubuk Khammam Teja dengan pemalsu Wheat Bran sebesar 5% / 10% / 15% |
+| `KTWS_5` / `KTWS_10` / `KTWS_15` | Bubuk Khammam Teja dengan pemalsu Wood Saw (serbuk gergaji) sebesar 5% / 10% / 15% |
+| `KTRB_5` / `KTRB_10` / `KTRB_15` | Bubuk Khammam Teja dengan pemalsu Rice Hull (sekam padi) sebesar 5% / 10% / 15% |
 
 ## Dataset & Model
 
