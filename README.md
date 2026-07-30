@@ -26,9 +26,8 @@ fine-tuning), dilengkapi visualisasi Grad-CAM untuk interpretability model.
 | File model `.keras` | Kemungkinan >50-100MB, melebihi batas nyaman GitHub tanpa Git LFS |
 | Seluruh output Grad-CAM (PNG/ZIP per kelas) | Ribuan file, hasil generate dari `xai_gradcam.py` |
 
-Kalau perlu membagikan dataset atau model terlatih, upload ke Kaggle Datasets /
-Google Drive / Hugging Face, lalu cantumkan link-nya di bagian "Dataset & Model"
-di bawah.
+Kalau perlu membagikan dataset tambahan, upload ke Kaggle Datasets / Google Drive /
+Hugging Face, lalu cantumkan link-nya di bagian "Dataset" di bawah.
 
 ## Cara Menjalankan (Reproduksi Penuh)
 
@@ -98,11 +97,13 @@ menggunakan 5 jenis bahan pemalsu, masing-masing pada 3 tingkat konsentrasi
 | `KTWS_5` / `KTWS_10` / `KTWS_15` | Bubuk Khammam Teja dengan pemalsu Wood Saw (serbuk gergaji) sebesar 5% / 10% / 15% |
 | `KTRB_5` / `KTRB_10` / `KTRB_15` | Bubuk Khammam Teja dengan pemalsu Rice Hull (sekam padi) sebesar 5% / 10% / 15% |
 
-## Dataset & Model
+## Dataset
 
-<!-- TODO: isi link ke dataset (Kaggle Datasets) dan model terlatih (Drive/HF) -->
-- Dataset: `<link>`
-- Model terlatih: `<link>`
+- Dataset: [Mendeley Data - ppy7vg8h7z](https://data.mendeley.com/datasets/ppy7vg8h7z/2)
+
+Model terlatih (`.keras`) tidak dibagikan lewat repo ini karena ukurannya
+melebihi batas nyaman GitHub. Model dapat dilatih ulang dari nol mengikuti
+langkah "Cara Menjalankan" di atas.
 
 ## Catatan Metodologis
 
